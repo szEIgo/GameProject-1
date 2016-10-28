@@ -6,7 +6,7 @@ var app = express();
 var port = 8000;
 var Player = require("./Player").Player; // Player.js
 
-var db = require('mongojs').connect('localhost/mongoapp', ['users']);
+var db = require('mongojs')('localhost/mongoapp', ['users']);
 
 
 var socket;
