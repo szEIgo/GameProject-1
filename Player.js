@@ -1,16 +1,22 @@
-function Player(startX, startY, name, hp, id) {
+function Player(startX, startY, pName, hp, id) {
     this.pos = {x: startX, y: startY};
+    this.dir = 2;
     this.alive = true;
-    this.maxhp = 1000; // Specified by Race later
-    this.money = 0; // Use money to buy upgrades
+    this.maxhp = 1000;
+    this.money = 0;
     this.currhp = hp;
-    this.name = name;
-    this.goFight = null; // Engage battle
-    this.fighting = null; // Already battling +
-    this.strength = 50; // Specified by Race later
-    this.lastStrike = 0; // Randomized percentage value to be added
-    this.hitSpeed = 500; // Specified by Race / Upgrade later
+    this.name = pName;
+    this.goFight = null;
+    this.fighting = null;
+    this.strength = 50;
+    this.lastStrike = 0;
+    this.hitSpeed = 500;
     this.id = id;
+    this.tileSize = 0;
+
+    this.xpForLevel = function(level) {
+        return level*level*level;
+    };
 
     this.getLastStrike = function() {
         return this.lastStrike;
@@ -34,6 +40,9 @@ function Player(startX, startY, name, hp, id) {
 
     this.setGoFight = function(value) {
         this.goFight = value;
+        //this.goToNpc = null;
+        //this.talkingTo = null;
+
         if(value == null) {
             this.fighting = null;
         }
