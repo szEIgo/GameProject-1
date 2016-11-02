@@ -1,24 +1,4 @@
-<div id="signDiv">
-	Username: <input id="signDiv-username" type="text"></input><br>
-	Password: <input id="signDiv-password" type="password"></input>
-	<button id="signDiv-signIn">Sign In</button>
-	<button id="signDiv-signUp">Sign Up</button>
-</div>
-
-<div id="gameDiv" style="display:none;">
-	<canvas id="ctx" width="500" height="500" style="border:1px solid #000000;"></canvas>
-
-	<div id="chat-text" style="width:500px;height:100px;overflow-y:scroll">
-		<div>Hello!</div>
-	</div>
-
-	<form id="chat-form">
-		<input id="chat-input" type="text" style="width:500px"></input>
-	</form>
-</div>
-
-<script src="https://cdn.socket.io/socket.io-1.4.5.js"></script>
-<script>var socket = io();
+var socket = io();
 
 //sign
 var signDiv = document.getElementById('signDiv');
@@ -183,4 +163,3 @@ document.onmousemove = function(event){
   var angle = Math.atan2(y,x) / Math.PI * 180;
   socket.emit('keyPress',{inputId:'mouseAngle',state:angle});
 }
-</script>
