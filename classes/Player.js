@@ -7,25 +7,32 @@ function Player(startX, startY, health, role, id){
   this.role = role;
   this.lastAttack = 0;
   this.RNG = 10;
-  this.attackFrequency = 1500;
+  this.attackSpeed = role.getAttackSpeed() * 1000;
   // set players health based on role
   this.baseHealth = 100;
   this.maxHealth = this.baseHealth * role.healthModifier;
   this.health = this.maxHealth;
 
-  this.addRNG(base){
-    var multiplier = (Math.Random() * 9 + 11)/10;
-    return base * multiplier;
+  this.addRNG(baseDamage){
+    var multiplier = (Math.Random() * 90 + 110)/100;
+    return baseDamage * multiplier;
   }
 
-this.attack(other){
+this.attack(){
+  // if player is ready to attack, then do
+  // if not, then send feedback
   if (lastAttack + attackFrequency > Date.now()){
-    other.damage(this.role.getDamageAmount(), this.role.getDamageType());
+    // returns object with info on the amount and type of the damage dealt
+    return {
+      damageAmount: this.role.damageAmount * this.addRNG(),
+      damageType: this.role.damageType
+    }
   }
   else{
+    // what happens if the player can't attack now, goes here:
+    // some sort of feedback should be performed
     console.log('you\'re fast, but not Chuck Norris');
-    // do nothing
-    // or send feedback in chat or on HUD?
+
   }
 
 }
