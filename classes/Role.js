@@ -57,4 +57,4 @@ roles.priest(){
 
 
 
-exports.Role = Role;
+module.exports = Role;

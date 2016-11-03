@@ -68,4 +68,4 @@ this.heal(amount){
   }
 }
 
-exports.Player = Player;
+module.exports = Player;
