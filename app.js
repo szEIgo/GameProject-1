@@ -7,7 +7,7 @@ var Roles = require(__dirname + '/server/roles.js');
 var game = require(__dirname + '/server/game.js');
 
 var clients = 0;
-var updateInterval = 40;
+var updateInterval = 1000;
 
 
 var players = {};
@@ -59,11 +59,12 @@ io.on('connection', function(socket){
     // make updateClients run every 'x' milliseconds
     var id = socket.id;
     //world.addPlayer(id);
-    var player = new Player(id, {x:5,y:1,z:0}, Roles.archer);
+    var player = new Player(id, {x:0,y:30,z:0}, Roles.archer);
     //socket.emit('createPlayer', player);
     game.addPlayer(player);
-    socket.emit('existingPlayers', game.getOtherPlayers());
     socket.emit('createPlayer', player);
+    socket.emit('existingPlayers', game.getOtherPlayers());
+
 
     socket.broadcast.emit('addOtherPlayer', player);
 

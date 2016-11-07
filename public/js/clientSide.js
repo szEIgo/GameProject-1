@@ -1,5 +1,5 @@
-var canvas, engine, scene, light, groundMaterial, ground, freeCam, playerCam;
-var player = {};
+var canvas, engine, scene, light, groundMaterial, ground, freeCam, playerCam, archCam;
+var playerID;
 var players = {};
 
 window.addEventListener('DOMContentLoaded', function(){
@@ -23,30 +23,7 @@ window.addEventListener('DOMContentLoaded', function(){
     scene.render();
   });
 });
-  function rotateItem(item, direction){
 
-  }
-
-  // move an item in the world to the target position
-  function moveItem(item, target){
-/*
-    console.log(target);
-    item.mesh.position.x = target.x;
-    item.mesh.position.y = target.y + 1;
-    item.mesh.position.z = target.z;
-
-    */
-    target.y += 30;
-    var easingFunction = new BABYLON.BackEase(.8);
-				easingFunction.setEasingMode(BABYLON.EasingFunction.EASINGMODE_EASEIN);
-
-				//Animation.CreateAndStartAnimation = function(name, mesh, tartgetProperty, framePerSecond, totalFrame, from, to, loopMode,easingfunction );
-				// var anim = BABYLON.Animation.CreateAndStartAnimation("anim", item.mesh, "position", 30, 100, item.mesh.position, target, 2, easingFunction);
-    // item.mesh.translate(new BABYLON.Vector3(target.x, target.y, target.z), 0.5);
-
-    var anim = BABYLON.Animation.CreateAndStartAnimation("anim", item.mesh, "position", 30, 50, item.mesh.position, target, 2);
-
-  }
 
   function createScene(){
     scene = new BABYLON.Scene(engine);
@@ -54,11 +31,14 @@ window.addEventListener('DOMContentLoaded', function(){
 
     var postProcess = new BABYLON.FxaaPostProcess("fxaa",1.0,null,null,engine,true);
 
-    var cam = new BABYLON.ArcRotateCamera("cam",10,0,0,new BABYLON.Vector3(0,0,0),scene);
-    cam.attachPostProcess(postProcess);
+    archCam = new BABYLON.ArcRotateCamera("cam",10,30,0,new BABYLON.Vector3(0,0,0),scene);
+    archCam.attachControl(canvas, false);
+    archCam.attachPostProcess(postProcess);
     freeCam = new BABYLON.FreeCamera('camera1', new BABYLON.Vector3(0,5,-10), scene);
     freeCam.setTarget(BABYLON.Vector3.Zero());
     freeCam.attachControl(canvas, false);
+
+
 
     light = new BABYLON.HemisphericLight('light1', new BABYLON.Vector3(0,1,0), scene);
 
@@ -106,12 +86,12 @@ window.addEventListener('DOMContentLoaded', function(){
     if(target.pickedMesh.name == 'GroundMesh'){
       socket.emit('updatePosition', target.pickedPoint);
       console.log('you clicked on ' + target.pickedMesh.name + ' at position ' + target.pickedMesh.position);
-      moveItem(player, target.pickedPoint);
+      moveItem(players[playerID], target.pickedPoint);
     }
     else{
       socket.emit('updatePosition', target.pickedPoint);
       target.pickedPoint.y ++;
-      moveItem(player, target.pickedMesh.position);
+      moveItem(players[playerID], target.pickedMesh.position);
     }
 
 });
@@ -125,14 +105,7 @@ window.addEventListener('DOMContentLoaded', function(){
     players[player.id].mesh.dispose();
   }
 
-  function addRemotePlayer(player){
-    if (players[player.id]){
-      console.log("player already exists");
-    }
-    players[player.id] = player;
-    players[player.id].mesh = BABYLON.Mesh.CreateSphere(player.id, 16, 1, scene);
 
-  }
 
   function updatePlayerPosition(data){
   //  console.log('incoming playerposition data: ');
@@ -143,20 +116,67 @@ window.addEventListener('DOMContentLoaded', function(){
     // players[data.id].mesh.position = data.position;
   }
 
-  function createPlayer(data){
-    player = data;
-
-    player.mesh = BABYLON.Mesh.CreateSphere(player.id, 16, 1, scene);
-    player.mesh.position.y = 30;
-    playerCam = new BABYLON.FollowCamera("FollowCam", new BABYLON.Vector3(2, 40, -45), scene);
-    playerCam.target = player.mesh; // target any mesh or object with a "position" Vector3
-    //scene.activeCamera = playerCam;
-
-    var cam = new BABYLON.ArcRotateCamera("cam",10,0,0,new BABYLON.Vector3(0,0,0),scene);
-    scene.activeCamera = cam;
-    scene.activeCamera.attachControl(canvas);
+  function rotateItem(item, direction){
 
   }
+
+  // move an item in the world to the target position
+  function moveItem(item, target){
+/*
+    console.log(target);
+    item.mesh.position.x = target.x;
+    item.mesh.position.y = target.y + 1;
+    item.mesh.position.z = target.z;
+
+    */
+
+    var easingFunction = new BABYLON.BackEase(.8);
+				easingFunction.setEasingMode(BABYLON.EasingFunction.EASINGMODE_EASEIN);
+
+				//Animation.CreateAndStartAnimation = function(name, mesh, tartgetProperty, framePerSecond, totalFrame, from, to, loopMode,easingfunction );
+				// var anim = BABYLON.Animation.CreateAndStartAnimation("anim", item.mesh, "position", 30, 100, item.mesh.position, target, 2, easingFunction);
+    // item.mesh.translate(new BABYLON.Vector3(target.x, target.y, target.z), 0.5);
+
+    var anim = BABYLON.Animation.CreateAndStartAnimation("anim", item.mesh, "position", 30, 100, item.mesh.position, target, 2);
+
+  }
+
+
+  function createPlayer(data){
+    if (!playerID){
+      console.log('setting playerID to: ' + data.id);
+      playerID = data.id;
+    }
+    
+  }
+  function addRemotePlayer(player){
+    if (players[player.id]){
+      console.log('addRemotePlayer says: player ' + data.id + ' already exists');
+    }
+    else{
+      players[player.id] = player;
+      players[player.id].mesh = BABYLON.Mesh.CreateSphere(player.id, 16, 1, scene);
+      players[player.id].mesh.position.y += 30;
+    }
+    if (playerID === player.id){
+      archCam.target = players[player.id].mesh;
+      scene.activeCamera = archCam;
+    }
+  }
+
+    // players[data.id].mesh = BABYLON.Mesh.CreateSphere(player.id, 16, 1, scene);
+
+    // playerCam = new BABYLON.FollowCamera("FollowCam", new BABYLON.Vector3(2, 40, -45), scene);
+    // playerCam.target = players[data.id].mesh; // target any mesh or object with a "position" Vector3
+    // scene.activeCamera = playerCam;
+
+
+
+    // cam.target = players[data.id].mesh;
+    // scene.activeCamera = cam;
+    // scene.activeCamera.attachControl(canvas);
+
+
 
   function destroyPlayer(){
     player.mesh.dispose();
