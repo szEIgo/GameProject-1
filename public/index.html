@@ -1,42 +1,50 @@
 <!DOCTYPE html>
 <html>
-<head lang="en">
-    <meta charset="UTF-8">
-    <title></title>
-    <script src="/socket.io/socket.io.js"></script>
-    <script src="//threejs.org/build/three.js"></script>
-    <script src="/js/world.js"></script>
+<head>
 
-    <style>
-        body {
-            margin: 0px;
-            overflow: hidden;
-        }
-    </style>
+    <meta http-equiv="Content-Type" content="text/html" charset="utf-8"/>
+    <link  rel="stylesheet" type="text/css" href="/css">
+    <title>Babylon - Getting Started</title>
+    <!-- link to the last version of babylon -->
+    <script src="/engine"></script>
 </head>
 <body>
+    <canvas id="renderCanvas"></canvas>
+    <script src="/client"></script>
+    <script src="/socket.io/socket.io.js"></script>
+<!--
+    <script src="/socket"></script>
+-->
+    <script>
 
-<div id="container"></div>
-<script>
+      var socket = io();
 
-    var socket = io();
+      socket.on('update', function(data){
+        for (var p in data){
+          console.log('moving player: ' + JSON.stringify(data[p]));
+          updatePlayerPosition(data[p]);
+        }
+      });
 
-    socket.on('updatePosition', function(data){
-        updatePlayerPosition(data);
-    });
-    socket.on('connect', function(){
-        loadWorld();
-        socket.emit('requestOldPlayers', {});
-    });
-    socket.on('createPlayer', function(data){
+      socket.on('createPlayer', function(data){
         createPlayer(data);
-    });
-    socket.on('addOtherPlayer', function(data){
-        addOtherPlayer(data);
-    });
-    socket.on('removeOtherPlayer', function(data){
-        removeOtherPlayer(data);
-    });
+      });
+
+      socket.on('existingPlayers', function(data){
+        console.log('adding existing players: ');
+        for (var p in data){
+          console.log('adding player: ' + JSON.stringify(data[p]));
+          addRemotePlayer(data[p]);
+        }
+      })
+
+      socket.on('addOtherPlayer', function(data){
+        console.log('player connected: \n' + JSON.stringify(data));
+        addRemotePlayer(data);
+      });
+      socket.on('removeOtherPlayer', function(data){
+        removeRemotePlayer(data);
+      });
 
 </script>
 </body>
