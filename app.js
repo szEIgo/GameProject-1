@@ -7,13 +7,13 @@ var Roles = require(__dirname + '/server/roles.js');
 var game = require(__dirname + '/server/game.js');
 
 var clients = 0;
-var updateInterval = 2000;
+var updateInterval = 40;
 
 
 var players = {};
 
 app.get('/', function(req, res){
-  //console.log(req);
+  //// console.log(req);
   res.sendFile(__dirname + '/public/index.html');
 });
 
@@ -22,22 +22,22 @@ app.get('/css', function(req, res){
 });
 
 app.get('/engine', function(req, res){
-  //console.log(req);
+  //// console.log(req);
   res.sendFile(__dirname + '/public/js/lib/babylon.2.4.max.js');
 });
 
 app.get('/client', function(req, res){
-  //console.log(req);
+  //// console.log(req);
   res.sendFile(__dirname + '/public/js/clientSide.js');
 });
 
 app.get('/map', function(req, res){
-  console.log(req);
+  // console.log(req);
   res.sendFile(__dirname + '/public/textures/map.jpg');
 });
 
 app.get('/gras1.jpg', function(req, res){
-  console.log(req);
+  // console.log(req);
   res.sendFile(__dirname + '/public/textures/gras1.jpg');
 });
 
@@ -48,12 +48,12 @@ var updateClients = function(){
   io.sockets.emit('update', game.getPlayers());
 
 }
-setInterval(updateClients, updateInterval);
+ setInterval(updateClients, updateInterval);
 
 
 io.on('connection', function(socket){
     clients++;
-    console.log('a user connected');
+    // console.log('a user connected');
 
 
     // make updateClients run every 'x' milliseconds
@@ -69,11 +69,11 @@ io.on('connection', function(socket){
 
     socket.on('updatePosition', function(data){
         var newData = game.updatePlayerData(socket.id, data);
-        console.log('a player moved \n' + JSON.stringify(newData));
+        // console.log('a player moved \n' + JSON.stringify(newData));
         // socket.broadcast.emit('updatePosition', newData);
     });
     socket.on('disconnect', function(){
-        console.log('user disconnected');
+        // console.log('user disconnected');
         io.emit('removeOtherPlayer', player);
         game.removePlayer( player.id );
         clients--;
@@ -85,5 +85,5 @@ var port = 1338;
 var ip_address = '127.0.0.1';
 
 http.listen(port, ip_address, function(){
-    console.log( "Listening on " + ip_address + ", server_port " + port );
+    // console.log( "Listening on " + ip_address + ", server_port " + port );
 });
