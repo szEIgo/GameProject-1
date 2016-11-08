@@ -1,7 +1,11 @@
-### GameProject Semester4
+## GameProject Semester4
+
+- Rasmus Larsen
+- Michael Rulle
+- Jonathan Szigethy
 =======
 
-## App-faget:
+# App-faget:
 
 https://drive.google.com/drive/folders/0B9gFXIPhT21MZUI1anllU1VzQjQ?usp=sharing
 
@@ -12,7 +16,7 @@ https://drive.google.com/drive/folders/0B9gFXIPhT21MZUI1anllU1VzQjQ?usp=sharing
 5. Monetization.
 6. Usability – del 2.
 
-## Scrum / Processrapportering
+# Scrum / Processrapportering
 
 
 - Alt skal dokumenteres
@@ -22,13 +26,13 @@ https://drive.google.com/drive/folders/0B9gFXIPhT21MZUI1anllU1VzQjQ?usp=sharing
 - Daily Scrum
 - Oversigt over projektet.
 
-## Kotlin
+# Kotlin
 
 - Bygge en Browser med kotlin til Smartphone, som har D-pad joypad indbygget, samt tilgå Database med rank.
 
 
 
-## MEAN
+# MEAN
 
 - Benyttelse af Database
 - Lave 3D med Babylon engine
