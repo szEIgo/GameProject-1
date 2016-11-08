@@ -1,4 +1,4 @@
-## GameProject Semester4
+# GameProject Semester4
 =======
 
 - Rasmus Larsen
@@ -18,16 +18,17 @@ https://drive.google.com/drive/folders/0B9gFXIPhT21MZUI1anllU1VzQjQ?usp=sharing
 6. Usability – del 2.
 
 # Scrum / Processrapportering
-
+https://drive.google.com/drive/folders/0B9gFXIPhT21MR0ZNM25HbUpSQUk?usp=sharing
 
 - Alt skal dokumenteres
-- Backlog
+- Backlog - Waffle.io/justAnAlias/GameProject
 - Sprint meetings
 - Review Meetings
 - Daily Scrum
 - Oversigt over projektet.
 
 # Kotlin
+http://github.com/szeigo/BrowserApp
 
 - Bygge en Browser med kotlin til Smartphone, som har D-pad joypad indbygget, samt tilgå Database med rank.
 
